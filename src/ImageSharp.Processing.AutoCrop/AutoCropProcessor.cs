@@ -98,7 +98,7 @@ namespace ImageSharp.Processing.AutoCrop
         {
             var analysis = GetAnalysis();
             var sourceBox = analysis.BoundingBox;
-            var targetBox = GetPaddedBounds(sourceBox);
+            var targetBox = GetTargetBounds(sourceBox);
             var offset = GetOffset(sourceBox, targetBox);
 
             image.CopyFrom(Source, sourceBox, offset);
@@ -107,7 +107,7 @@ namespace ImageSharp.Processing.AutoCrop
         protected virtual Size GetDestinationSize()
         {
             var analysis = GetAnalysis();
-            var bounds = GetPaddedBounds(analysis.BoundingBox);
+            var bounds = GetTargetBounds(analysis.BoundingBox);
             return bounds.Size();
         }
 
@@ -119,7 +119,7 @@ namespace ImageSharp.Processing.AutoCrop
             return new Point(x, y);
         }
 
-        protected virtual Rectangle GetPaddedBounds(Rectangle boundingBox)
+        protected virtual Rectangle GetTargetBounds(Rectangle boundingBox)
         {
             var bounds = boundingBox;
             var dimension = (bounds.Width + bounds.Height) / 2;

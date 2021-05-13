@@ -18,10 +18,14 @@ namespace ImageSharp.Processing.AutoCrop.Tests
                 PadY = 5
             };
 
-            using (var image = Image.Load("TestImages/shoe.jpg"))
+            using (var image = Image.Load("TestImages/test.png"))
             {
                 image.Mutate(ctx => ctx.AutoCrop(settings));
-                image.SaveAsJpeg("shoe_result.jpg");
+
+                Assert.Equal(300, image.Width);
+                Assert.Equal(250, image.Height);
+
+                image.SaveAsPng("test_result.png");
             }
         }
     }

@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31229.75
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageSharp.Processing.AutoCrop", "src\ImageSharp.Processing.AutoCrop\ImageSharp.Processing.AutoCrop.csproj", "{A77A54D1-25FE-4AB2-A582-CCADF7F40163}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B2D77117-77FF-4366-8AE2-151AEBBE6DB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageSharp.Processing.AutoCrop.Tests", "tests\ImageSharp.Processing.AutoCrop.Tests\ImageSharp.Processing.AutoCrop.Tests.csproj", "{967FB33F-3D42-4831-97A5-D3E560578025}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A77A54D1-25FE-4AB2-A582-CCADF7F40163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A77A54D1-25FE-4AB2-A582-CCADF7F40163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A77A54D1-25FE-4AB2-A582-CCADF7F40163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A77A54D1-25FE-4AB2-A582-CCADF7F40163}.Release|Any CPU.Build.0 = Release|Any CPU
+		{967FB33F-3D42-4831-97A5-D3E560578025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{967FB33F-3D42-4831-97A5-D3E560578025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{967FB33F-3D42-4831-97A5-D3E560578025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{967FB33F-3D42-4831-97A5-D3E560578025}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{967FB33F-3D42-4831-97A5-D3E560578025} = {B2D77117-77FF-4366-8AE2-151AEBBE6DB2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {86D11F9C-7B6C-4373-AF4A-90A6864E1DDA}
+	EndGlobalSection
+EndGlobal

@@ -14,7 +14,7 @@ namespace ImageSharp.Processing.AutoCrop.Extensions
             if (color is Rgb24 rgbColor) return ToColorBucket(rgbColor);
             if (color is Rgba32 rgbaColor) return ToColorBucket(rgbaColor);
             
-            throw new NotImplementedException($"Format {color.GetType().Name} is not implemented");
+            throw new NotSupportedException($"Format {color.GetType().Name} is not supported");
         }
 
         public static byte ToColorBucket(this Rgb24 color)

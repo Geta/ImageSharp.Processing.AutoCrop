@@ -11,6 +11,8 @@ namespace ImageSharp.Processing.AutoCrop
     {
         private readonly IAutoCropSettings _settings;
 
+        public ICropAnalysis Analysis { get; set; }
+
         public AutoCropProcessor(IAutoCropSettings settings)
         {
             _settings = settings;
@@ -20,11 +22,17 @@ namespace ImageSharp.Processing.AutoCrop
         {
             if (source is Image<Rgb24> rgbSource)
             {
-                return (ICloningImageProcessor<TPixel>)new RgbAutoCropProcessor(configuration, _settings, rgbSource, sourceRectangle);
+                var processor = new RgbAutoCropProcessor(configuration, _settings, rgbSource);
+                Analysis = processor.Analysis;
+
+                return (ICloningImageProcessor<TPixel>)processor;
             }
             else if (source is Image<Rgba32> rgbaSource)
             {
-                return (ICloningImageProcessor<TPixel>)new RgbaAutoCropProcessor(configuration, _settings, rgbaSource, sourceRectangle);
+                var processor = new RgbaAutoCropProcessor(configuration, _settings, rgbaSource);
+                Analysis = processor.Analysis;
+
+                return (ICloningImageProcessor<TPixel>)processor;
             }
 
             throw new NotSupportedException("Unsupported pixel type");
@@ -36,30 +44,27 @@ namespace ImageSharp.Processing.AutoCrop
         protected readonly Configuration Configuration;
         protected readonly IAutoCropSettings Settings;
         protected readonly Image<TPixel> Source;
-        protected readonly Rectangle SourceRectangle;
+        
+        public ICropAnalysis Analysis { get; set; }
 
-        protected AutoCropProcessor(Configuration configuration, IAutoCropSettings settings, Image<TPixel> source, Rectangle sourceRectangle)
+        protected AutoCropProcessor(Configuration configuration, IAutoCropSettings settings, Image<TPixel> source)
         {
             Configuration = configuration;
             Source = source;
             Settings = settings;
-            SourceRectangle = sourceRectangle;
         }
 
         public Image<TPixel> CloneAndExecute()
         {
+            if (!Analysis.Success)
+                return Source;
+
             try
             {
-                var analysis = GetAnalysis();
-                if (analysis.Success)
-                {
-                    var target = CreateTarget();
-                    ApplySource(target);
+                var target = CreateTarget();
+                ApplySource(target);
 
-                    return target;
-                }
-
-                return Source;
+                return target;
             }
             catch (Exception innerException)
             {
@@ -87,8 +92,6 @@ namespace ImageSharp.Processing.AutoCrop
             GC.SuppressFinalize(this);
         }
 
-        protected abstract ICropAnalysis GetAnalysis();
-
         protected virtual void Dispose(bool disposing)
         {
 
@@ -96,8 +99,7 @@ namespace ImageSharp.Processing.AutoCrop
 
         protected virtual void ApplySource(Image<TPixel> image)
         {
-            var analysis = GetAnalysis();
-            var sourceBox = analysis.BoundingBox;
+            var sourceBox = Analysis.BoundingBox;
             var targetBox = GetTargetBounds(sourceBox);
             var offset = GetOffset(sourceBox, targetBox);
 
@@ -106,8 +108,7 @@ namespace ImageSharp.Processing.AutoCrop
 
         protected virtual Size GetDestinationSize()
         {
-            var analysis = GetAnalysis();
-            var bounds = GetTargetBounds(analysis.BoundingBox);
+            var bounds = GetTargetBounds(Analysis.BoundingBox);
             return bounds.Size();
         }
 
@@ -134,11 +135,10 @@ namespace ImageSharp.Processing.AutoCrop
 
         private Image<TPixel> CreateTarget()
         {
-            var analysis = GetAnalysis();
             var destinationSize = GetDestinationSize();
-            var background = analysis.Background.ToPixel<TPixel>();
+            var background = Analysis.Background.ToPixel<TPixel>();
 
             return new Image<TPixel>(Configuration, destinationSize.Width, destinationSize.Height, background);
-        }       
+        }
     }
 }

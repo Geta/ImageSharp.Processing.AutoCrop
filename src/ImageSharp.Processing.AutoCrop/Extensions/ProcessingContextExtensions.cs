@@ -9,5 +9,19 @@ namespace ImageSharp.Processing.AutoCrop.Extensions
         {
             context.ApplyProcessor(new AutoCropProcessor(settings));
         }
+
+        public static void AutoCrop(this IImageProcessingContext context, IAutoCropSettings settings, out ICropAnalysis analysis)
+        {
+            var processor = new AutoCropProcessor(settings);
+            context.ApplyProcessor(processor);
+            analysis = processor.Analysis;
+        }
+
+        public static void AnalyzeCrop(this IImageProcessingContext context, IAutoCropSettings settings, out ICropAnalysis analysis)
+        {
+            var processor = new CropAnalysisProcessor(settings);
+            context.ApplyProcessor(processor);
+            analysis = processor.Analysis;
+        }
     }
 }

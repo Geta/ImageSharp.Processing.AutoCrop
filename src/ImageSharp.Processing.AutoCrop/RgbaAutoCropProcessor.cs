@@ -7,17 +7,10 @@ namespace ImageSharp.Processing.AutoCrop
 {
     public class RgbaAutoCropProcessor : AutoCropProcessor<Rgba32>
     {
-        private readonly ICropAnalysis _analysis;
-
-        public RgbaAutoCropProcessor(Configuration configuration, IAutoCropSettings settings, Image<Rgba32> source, Rectangle sourceRectangle) : base(configuration, settings, source, sourceRectangle)
+        public RgbaAutoCropProcessor(Configuration configuration, IAutoCropSettings settings, Image<Rgba32> source) : base(configuration, settings, source)
         {
             var analyzer = new RgbaThresholdAnalyzer();
-            _analysis = analyzer.GetAnalysis(source, settings.ColorThreshold, settings.BucketThreshold);
-        }
-
-        protected override ICropAnalysis GetAnalysis()
-        {
-            return _analysis;
+            Analysis = analyzer.GetAnalysis(source, settings.ColorThreshold, settings.BucketThreshold);
         }
     }
 }

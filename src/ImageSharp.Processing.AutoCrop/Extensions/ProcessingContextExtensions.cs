@@ -6,6 +6,11 @@ namespace ImageSharp.Processing.AutoCrop.Extensions
 {
     public static class ProcessingContextExtensions
     {
+        public static void AutoCrop(this IImageProcessingContext context)
+        {
+            context.ApplyProcessor(new AutoCropProcessor(new AutoCropSettings()));
+        }
+
         public static void AutoCrop(this IImageProcessingContext context, IAutoCropSettings settings)
         {
             context.ApplyProcessor(new AutoCropProcessor(settings));

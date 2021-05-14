@@ -2,10 +2,29 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Copyright>Copyright 2021 Geta AS</Copyright>
+    <Description>Automatic cropping for images with a flat background.
+Works with SixLabors.ImageSharp 1.0.0 and above.</Description>
+    <Authors>svenrog</Authors>
+    <Company>Geta AS</Company>
+    <SignAssembly>false</SignAssembly>
+    <RepositoryUrl>https://github.com/svenrog/ImageSharp.Processing.AutoCrop</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags></PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

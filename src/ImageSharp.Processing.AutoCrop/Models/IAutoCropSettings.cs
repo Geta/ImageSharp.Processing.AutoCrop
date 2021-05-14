@@ -6,6 +6,5 @@
         int PadY { get; }
         int ColorThreshold { get; }
         float BucketThreshold { get; set; }
-        bool Debug { get; }
     }
 }

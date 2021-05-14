@@ -6,6 +6,5 @@
         public int PadY { get; set; }
         public int ColorThreshold { get; set; } = 35;
         public float BucketThreshold { get; set; } = 0.945f;
-        public bool Debug { get; set; }
     }
 }

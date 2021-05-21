@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>svenrog</Authors>
+    <Company>Geta AS</Company>
+    <Product>ImageSharp.Web.AutoCrop</Product>
+    <Description>Automatic cropping for images with a flat background.
+Works with SixLabors.ImageSharp 1.0.1 and above.</Description>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/svenrog/ImageSharp.Processing.AutoCrop</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <Copyright>Copyright 2021 Geta AS</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +22,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ImageSharp.Processing.AutoCrop\ImageSharp.Processing.AutoCrop.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

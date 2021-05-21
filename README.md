@@ -43,7 +43,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 }
 ```
 
-Check out the [demo](docs/demo.mhtml) page for some examples.
+Check out the [demo](docs/demo.md) for some examples.
 Check out the [demo project](src/ImageSharp.Web.AutoCrop.Demo) for the full source.
 
 ### Plain AutoCrop

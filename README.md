@@ -15,6 +15,39 @@ Uses a relative luminance tolerance to determine which area to crop.
 
 ## How to get started?
 
+### ImageSharp.Web integration
+
+Requires SixLabors.ImageSharp 1.0.1 or above
+
+- `install-package ImageSharp.Web.AutoCrop`
+
+The namespace `ImageSharp.Web.AutoCrop.Extensions` contains some useful extensions to `SixLabors.ImageSharp.Web.DependencyInjection.IImageSharpBuilder`
+
+#### In Startup.cs
+
+Make sure to call the extension `AddAutoCropProcessor` when adding ImageSharp to services, that's all.
+
+```
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddImageSharp()
+            .AddAutoCropProcessor();
+    ...
+}
+
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    // Configure ImageSharp.Web
+    app.UseImageSharp();
+    ...
+}
+```
+
+Check out the [demo](docs/demo.mhtml) page for some examples.
+Check out the [demo project](src/ImageSharp.Web.AutoCrop.Demo) for the full source.
+
+### Plain AutoCrop
+
 Requires SixLabors.ImageSharp 1.0.0 or above
 
 - `install-package ImageSharp.Processing.AutoCrop`
@@ -28,6 +61,8 @@ image.Mutate(ctx => ctx.AutoCrop());
 ```
 
 Check the different overloads for some options.
+
+
 
 ## Details
 

@@ -3,10 +3,10 @@
 ## Cup example
 
 ### Original
-[Cup](cup.png)
+![Cup](cup.png)
 
 ### Cropped
-[Cup resized](cup_r.png)
+![Cup resized](cup_r.png)
 Cropped with no padding.
 ```
 ?autocrop=0
@@ -15,10 +15,10 @@ Cropped with no padding.
 ## Stones example
 
 ### Original
-[Stones](stones.jpg)
+![Stones](stones.jpg)
 
 ### Cropped
-[Stones resized](stones_r.jpg)
+![Stones resized](stones_r.jpg)
 Cropped with 10% padding.
 ```
 ?autocrop=10
@@ -27,10 +27,10 @@ Cropped with 10% padding.
 ## Leaf example
 
 ### Original
-[Leaf](leaf.jpg)
+![Leaf](leaf.jpg)
 
 ### Cropped
-[Leaf resized](leaf_r.jpg)
+![Leaf resized](leaf_r.jpg)
 Cropped and resized with added padding via padmode.
 ```
 ?autocrop=0;5;50&width=400&height=200&rmode=pad

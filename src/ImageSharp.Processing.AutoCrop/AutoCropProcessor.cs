@@ -57,7 +57,7 @@ namespace ImageSharp.Processing.AutoCrop
         public Image<TPixel> CloneAndExecute()
         {
             if (!Analysis.Success)
-                return Source;
+                return null;
 
             try
             {
@@ -78,7 +78,9 @@ namespace ImageSharp.Processing.AutoCrop
             try
             {
                 image = CloneAndExecute();
-                Source.SwapPixelBuffersFrom(image);
+                
+                if (image != null)
+                    Source.SwapPixelBuffersFrom(image);
             }
             finally
             {

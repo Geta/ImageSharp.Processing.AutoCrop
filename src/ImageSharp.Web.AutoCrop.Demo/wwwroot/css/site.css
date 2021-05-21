@@ -1,0 +1,15 @@
+﻿a {
+  color: #0366d6;
+}
+
+.image {
+    border: 1px solid #ccc;
+}
+
+.example {
+    display: flex;
+}
+
+.example > div {
+    padding: 20px;
+}

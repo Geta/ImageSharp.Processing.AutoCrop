@@ -5,6 +5,7 @@
         int PadX { get; }
         int PadY { get; }
         int ColorThreshold { get; }
-        float BucketThreshold { get; set; }
+        float BucketThreshold { get; }
+        bool UseBuckets { get; }
     }
 }

@@ -1,0 +1,53 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "AutoCrop - Demo";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Demo</h1>
+
+    <div class="example">
+        <div>
+            <h3>Cup example</h3>
+            <p>Original</p>
+            <img class="image" alt="cup" src="/img/cup.png?width=400" />
+        </div>
+        <div>
+            <h3>Cropped with no padding</h3>
+            <p>Crop with padx 0, pady 0 (inferred from first param), threshold 35 (default)</p>
+            <pre>?autocrop=0&width=400</pre>
+            <img class="image" alt="cropped cup" src="/img/cup.png?autocrop=0&width=400&quality=90" />
+        </div>
+    </div>
+
+    <div class="example">
+        <div>
+            <h3>Stone example</h3>
+            <p>Original</p>
+            <img class="image" alt="stones" src="/img/stones.jpg?height=300&quality=90" />
+        </div>
+        <div>
+            <h3>Cropped with 10% padding</h3>
+            <p>Crop with padx 10, pady 10 (inferred from first param), threshold 35 (default)</p>
+            <pre>?autocrop=10&height=300</pre>
+            <img class="image" alt="cropped stones" src="/img/stones.jpg?autocrop=10&height=300&quality=90" />
+        </div>
+    </div>
+
+    <div class="example">
+        <div>
+            <h3>Leaf example</h3>
+            <p>Original</p>
+            <img class="image" alt="leaf" src="/img/leaf.jpg?width=400&quality=90" />
+        </div>
+        <div>
+            <h3>Cropped and resized with added padding</h3>
+            <p>Crop with padx 0, pady 5, threshold 50</p>
+            <p>Resize with width 500, height 200, and resize mode pad (background color set automatically by crop analysis)</p>
+            <pre>?autocrop=0;5;50&width=400&height=200&rmode=pad</pre>
+            <img class="image" alt="cropped leaf" src="/img/leaf.jpg?autocrop=0;5;50&width=400&height=200&rmode=pad&quality=90" />
+        </div>
+    </div>
+
+</div>

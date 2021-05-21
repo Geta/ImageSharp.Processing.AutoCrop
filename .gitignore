@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# ImageSharp File Cache
+is-cache/
+
+# Minified Js and Maps
+*.min.js
+*.min.map

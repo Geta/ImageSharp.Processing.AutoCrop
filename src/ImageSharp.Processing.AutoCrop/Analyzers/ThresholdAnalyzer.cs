@@ -31,24 +31,24 @@ namespace ImageSharp.Processing.AutoCrop.Analyzers
             }
 
             Rectangle boundingBox;
-            bool _foundBoundingBox;
+            bool foundBoundingBox;
 
             if (borderInspection.Success == false)
             {
                 boundingBox = outerBox;
-                _foundBoundingBox = false;
+                foundBoundingBox = false;
             }
             else
             {
                 boundingBox = GetBoundingBox(image, imageBox, borderInspection, colorThreshold);
-                _foundBoundingBox = ValidateRectangle(boundingBox);
+                foundBoundingBox = ValidateRectangle(boundingBox);
             }
 
             return new CropAnalysis
             {
                 Background = borderInspection.Background,
                 BoundingBox = boundingBox,
-                Success = _foundBoundingBox
+                Success = foundBoundingBox
             };
         }
 

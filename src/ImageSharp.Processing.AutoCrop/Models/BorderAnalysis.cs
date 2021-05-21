@@ -22,7 +22,7 @@ namespace ImageSharp.Processing.AutoCrop.Models
 
     public class BorderAnalysis<TPixel> : IBorderAnalysis where TPixel : unmanaged, IPixel
     {
-        public BorderAnalysis(IDictionary<Color, int> colors, IDictionary<int, int> buckets, int colorThreshold, float bucketThreshold)    
+        public BorderAnalysis(IDictionary<Color, int> colors, IDictionary<int, int> buckets, int? colorThreshold, float? bucketThreshold)
         {
             if (colors == null) 
                 throw new ArgumentNullException(nameof(colors));
@@ -45,14 +45,13 @@ namespace ImageSharp.Processing.AutoCrop.Models
                 BucketRatio = 1;
             }
 
-            if (bucketThreshold >= 1.0f)
-            {
-                Success = colors.Count > 0 && colors.Count < colorThreshold;
-            }
-            else
-            {
-                Success = colors.Count > 0 && (colors.Count < colorThreshold || BucketRatio > bucketThreshold);
-            }
+            if (bucketThreshold.HasValue && BucketRatio < bucketThreshold.Value)
+                return;
+
+            if (colorThreshold.HasValue && colors.Count < colorThreshold.Value)
+                return;
+
+            Success = colors.Count > 0;
         }
 
         public int Colors { get; }

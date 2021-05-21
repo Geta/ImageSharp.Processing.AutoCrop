@@ -8,19 +8,26 @@ namespace ImageSharp.Processing.AutoCrop.Analyzers
 {
     public abstract class ThresholdAnalyzer<TPixel> : ICropAnalyzer<TPixel> where TPixel : unmanaged, IPixel<TPixel>
     {
-        protected abstract IBorderAnalysis GetBorderAnalysis(Image<TPixel> image, Rectangle rectangle, int colorThreshold, float bucketTreshold);
+        protected abstract IBorderAnalysis GetBorderAnalysis(Image<TPixel> image, Rectangle rectangle, int? colorThreshold, float? bucketTreshold);
         protected abstract Rectangle GetBoundingBox(Image<TPixel> image, Rectangle rectangle, IBorderAnalysis borderAnalysis, int colorThreshold);
 
-        public virtual ICropAnalysis GetAnalysis(Image<TPixel> image, int colorThreshold, float bucketTreshold)
+        public virtual ICropAnalysis GetAnalysis(Image<TPixel> image, int? colorThreshold, float? bucketTreshold)
         {
             var outerBox = new Rectangle(0, 0, image.Width, image.Height);
             var imageBox = outerBox;
 
+            if (colorThreshold.HasValue == false && bucketTreshold.HasValue == false)
+                colorThreshold = 35;
+
             var borderInspection = GetBorderAnalysis(image, imageBox, colorThreshold, bucketTreshold);
             if (borderInspection.Success == false)
             {
-                colorThreshold = (int)Math.Round(colorThreshold * 0.5);
-                bucketTreshold = 1.0f;
+                if (colorThreshold.HasValue)
+                    colorThreshold = (int)Math.Round(colorThreshold.Value * 0.5);
+
+                if (colorThreshold.HasValue && bucketTreshold.HasValue)
+                    bucketTreshold = null;
+
                 imageBox = imageBox.Contract(10);
 
                 var additionalInspection = GetBorderAnalysis(image, imageBox, colorThreshold, bucketTreshold);
@@ -40,7 +47,7 @@ namespace ImageSharp.Processing.AutoCrop.Analyzers
             }
             else
             {
-                boundingBox = GetBoundingBox(image, imageBox, borderInspection, colorThreshold);
+                boundingBox = GetBoundingBox(image, imageBox, borderInspection, colorThreshold ?? 35);
                 foundBoundingBox = ValidateRectangle(boundingBox);
             }
 
@@ -59,11 +66,5 @@ namespace ImageSharp.Processing.AutoCrop.Analyzers
 
             return true;
         }
-
-        /*
-         Bounding box
-        */
-        
-        
     }
 }

@@ -6,6 +6,6 @@ namespace ImageSharp.Processing.AutoCrop.Analyzers
 {
     public interface ICropAnalyzer<TPixel> where TPixel : unmanaged, IPixel<TPixel>
     {
-        ICropAnalysis GetAnalysis(Image<TPixel> image, int colorThreshold, float bucketTreshold);
+        ICropAnalysis GetAnalysis(Image<TPixel> image, int? colorThreshold, float? bucketTreshold);
     }
 }

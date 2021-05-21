@@ -15,7 +15,7 @@ namespace ImageSharp.Processing.AutoCrop.Analyzers
             _inspector = new RgbaBorderAnalyzer();
         }
 
-        protected override IBorderAnalysis GetBorderAnalysis(Image<Rgba32> image, Rectangle rectangle, int colorThreshold, float bucketTreshold)
+        protected override IBorderAnalysis GetBorderAnalysis(Image<Rgba32> image, Rectangle rectangle, int? colorThreshold, float? bucketTreshold)
         {
             return _inspector.Analyze(image, rectangle, colorThreshold, bucketTreshold);
         }

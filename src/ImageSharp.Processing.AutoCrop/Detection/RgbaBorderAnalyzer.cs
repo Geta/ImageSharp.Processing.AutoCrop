@@ -8,13 +8,13 @@ namespace ImageSharp.Processing.AutoCrop.Detection
 {
     public class RgbaBorderAnalyzer : BorderAnalyzer<Rgba32>
     {
-        public override IBorderAnalysis Analyze(Image<Rgba32> image, Rectangle rectangle, int colorThreshold, float bucketThreshold)
+        public override IBorderAnalysis Analyze(Image<Rgba32> image, Rectangle rectangle, int? colorThreshold, float? bucketThreshold)
         {
             var h = image.Height;
             var w = image.Width;
 
             // A list of counted colors found along the rectangle border
-            var colors = new Dictionary<Color, int>(colorThreshold);
+            var colors = new Dictionary<Color, int>(colorThreshold ?? 100);
 
             // A list of counted color buckets
             var buckets = new Dictionary<int, int>(PixelExtensions.GetMaxColorBuckets());

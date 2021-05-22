@@ -102,16 +102,21 @@ namespace ImageSharp.Processing.AutoCrop
         protected virtual void ApplySource(Image<TPixel> image)
         {
             var sourceBox = Analysis.BoundingBox;
-            var targetBox = GetTargetBounds(sourceBox);
-            var offset = GetOffset(sourceBox, targetBox);
+            var paddedSource = GetPaddedRectangle(sourceBox);
+            var targetBox = GetRectangleWithoutOrigin(paddedSource);
 
-            image.CopyFrom(Source, sourceBox, offset);
+            // Copy as much of the source image as possible.
+            // Mainly to avoid jagged edges
+            var constrainedSource = paddedSource.Constrain(GetSourceRectangle());
+            var offset = GetOffset(constrainedSource, targetBox);
+
+            image.CopyFrom(Source, constrainedSource, offset);
         }
 
         protected virtual Size GetDestinationSize()
         {
-            var bounds = GetTargetBounds(Analysis.BoundingBox);
-            return bounds.Size();
+            var paddedSource = GetPaddedRectangle(Analysis.BoundingBox);
+            return GetRectangleWithoutOrigin(paddedSource).Size();
         }
 
         protected virtual Point GetOffset(Rectangle source, Rectangle target)
@@ -122,17 +127,30 @@ namespace ImageSharp.Processing.AutoCrop
             return new Point(x, y);
         }
 
-        protected virtual Rectangle GetTargetBounds(Rectangle boundingBox)
+        protected virtual Rectangle GetRectangleWithoutOrigin(Rectangle rectangle)
         {
-            var bounds = boundingBox;
-            var dimension = (bounds.Width + bounds.Height) / 2;
+            return new Rectangle(0, 0, rectangle.Width, rectangle.Height);
+        }
+
+        protected virtual Rectangle GetPaddedRectangle(Rectangle rectangle)
+        {
+            var padding = GetPadSize(rectangle);
+            return rectangle.Expand(padding.Width, padding.Height);
+        }
+
+        protected virtual Size GetPadSize(Rectangle rectangle)
+        {
+            var dimension = (rectangle.Width + rectangle.Height) / 2;
 
             var px = Settings.PadX / 100.0;
             var py = Settings.PadY / 100.0;
 
-            var paddedBounds = bounds.Expand((int)(dimension * px), (int)(dimension * py));
+            return new Size((int)(dimension * px), (int)(dimension * py));
+        }
 
-            return new Rectangle(0, 0, paddedBounds.Width, paddedBounds.Height);
+        protected virtual Rectangle GetSourceRectangle()
+        {
+            return new Rectangle(0, 0, Source.Width, Source.Height);
         }
 
         private Image<TPixel> CreateTarget()

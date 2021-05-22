@@ -71,7 +71,7 @@ namespace ImageSharp.Processing.AutoCrop.Extensions
             if (rectangle.Y + rectangle.Height > other.Y + other.Height)
                 ym -= (rectangle.Y + rectangle.Height) - (other.Y + other.Height);
 
-            return new Rectangle(xn, yn, xm, ym);
+            return new Rectangle(xn, yn, xm - xn, ym - yn);
         }
 
         public static Rectangle Scale(this Rectangle rectangle, double scale)

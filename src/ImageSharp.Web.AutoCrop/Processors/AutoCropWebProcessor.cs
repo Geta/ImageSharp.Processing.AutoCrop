@@ -70,10 +70,18 @@ namespace ImageSharp.Web.AutoCrop.Processors
             {
                 settings.BucketThreshold = Clamp(bucketThreshold, 0, 100) / 100.0f;
             }
+            else
+            {
+                settings.BucketThreshold = 0.945f;
+            }
 
             if (data.Length > 2 && int.TryParse(data[2], out var colorThreshold))
             {
                 settings.ColorThreshold = Clamp(colorThreshold, 0, 254);
+            }
+            else
+            {
+                settings.ColorThreshold = 35;
             }
 
             if (data.Length > 1 && int.TryParse(data[1], out var padY))

@@ -45,13 +45,16 @@ namespace ImageSharp.Processing.AutoCrop.Models
                 BucketRatio = 1;
             }
 
+
+            bool thresholdSuccess = false;
+
             if (bucketThreshold.HasValue && BucketRatio < bucketThreshold.Value)
-                return;
+                thresholdSuccess = true;
 
-            if (colorThreshold.HasValue && colors.Count < colorThreshold.Value)
-                return;
+            if (colorThreshold.HasValue && colors.Count >= colorThreshold.Value)
+                thresholdSuccess = true;
 
-            Success = colors.Count > 0;
+            Success = colors.Count > 0 && thresholdSuccess;
         }
 
         public int Colors { get; }

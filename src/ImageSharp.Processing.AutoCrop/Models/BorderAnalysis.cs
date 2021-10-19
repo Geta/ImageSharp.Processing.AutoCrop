@@ -48,7 +48,7 @@ namespace ImageSharp.Processing.AutoCrop.Models
 
             bool thresholdSuccess = false;
 
-            if (bucketThreshold.HasValue && BucketRatio < bucketThreshold.Value)
+            if (bucketThreshold.HasValue && BucketRatio >= bucketThreshold.Value)
                 thresholdSuccess = true;
 
             if (colorThreshold.HasValue && colors.Count >= colorThreshold.Value)

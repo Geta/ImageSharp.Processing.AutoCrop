@@ -15,6 +15,7 @@ namespace ImageSharp.Web.AutoCrop.Processors
     {
         private const string _autoCropCommandKey = "autocrop";
         private const string _backgroundColorCommandKey = "bgcolor";
+        private const string _resizeModeCommandKey = "rmode";
 
         private static readonly IEnumerable<string> _autoCropCommands = new string[1]
         {
@@ -25,8 +26,9 @@ namespace ImageSharp.Web.AutoCrop.Processors
 
         public FormattedImage Process(FormattedImage image, ILogger logger, IDictionary<string, string> commands, CommandParser parser, CultureInfo culture)
         {
-            var parameter = commands.GetValueOrDefault(_autoCropCommandKey);
-            var parsed = ParseSettings(parameter, out var settings);
+            var autoCropParameter = commands.GetValueOrDefault(_autoCropCommandKey);
+            var resizeModeParameter = commands.GetValueOrDefault(_resizeModeCommandKey);
+            var parsed = ParseSettings(autoCropParameter, resizeModeParameter, out var settings);
 
             if (parsed) 
             {
@@ -49,14 +51,14 @@ namespace ImageSharp.Web.AutoCrop.Processors
             return image;
         }
 
-        private bool ParseSettings(string parameter, out AutoCropSettings settings)
+        private bool ParseSettings(string autoCropParameter, string resizeModeParameter, out AutoCropSettings settings)
         {
             settings = null;
 
-            if (string.IsNullOrWhiteSpace(parameter))
+            if (string.IsNullOrWhiteSpace(autoCropParameter))
                 return false;
 
-            var data = parameter.Split(',', ';', '|');
+            var data = autoCropParameter.Split(',', ';', '|');
             var parsed = int.TryParse(data[0], out var padX);
             if (!parsed)
                 return false;
@@ -93,7 +95,24 @@ namespace ImageSharp.Web.AutoCrop.Processors
                 settings.PadY = Clamp(padX, 0, 100);
             }
 
+            if (Enum.TryParse(resizeModeParameter, true, out ResizeMode resizeMode))
+            {
+                settings.Mode = GetMode(resizeMode);
+            }
+
             return true;
+        }
+
+        private CropMode GetMode(ResizeMode resizeMode)
+        {
+            switch (resizeMode)
+            {
+                case ResizeMode.Max:
+                case ResizeMode.Min:
+                case ResizeMode.Crop:
+                case ResizeMode.Stretch: return CropMode.Contain;
+                default: return CropMode.Pad;
+            }    
         }
 
         private int Clamp(int value, int min, int max)

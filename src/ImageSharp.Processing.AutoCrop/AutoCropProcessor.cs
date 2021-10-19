@@ -101,13 +101,12 @@ namespace ImageSharp.Processing.AutoCrop
 
         protected virtual void ApplySource(Image<TPixel> image)
         {
-            var sourceBox = Analysis.BoundingBox;
-            var paddedSource = GetPaddedRectangle(sourceBox);
-            var targetBox = GetRectangleWithoutOrigin(paddedSource);
+            var paddedSource = GetTargetRectangle();
+            var targetBox = paddedSource.Bounds();
 
             // Copy as much of the source image as possible.
             // Mainly to avoid jagged edges
-            var constrainedSource = paddedSource.Constrain(GetSourceRectangle());
+            var constrainedSource = paddedSource.Constrain(Source.Bounds());
             var offset = GetOffset(constrainedSource, targetBox);
 
             image.CopyFrom(Source, constrainedSource, offset);
@@ -115,8 +114,18 @@ namespace ImageSharp.Processing.AutoCrop
 
         protected virtual Size GetDestinationSize()
         {
-            var paddedSource = GetPaddedRectangle(Analysis.BoundingBox);
-            return GetRectangleWithoutOrigin(paddedSource).Size();
+            var paddedSource = GetTargetRectangle();
+            return paddedSource.Size();
+        }
+
+        protected virtual Rectangle GetTargetRectangle()
+        {
+            var paddingConstraint = (Rectangle?)null;
+
+            if (Settings.Mode == CropMode.Contain)
+                paddingConstraint = Source.Bounds();
+
+            return GetPaddedRectangle(Analysis.BoundingBox, paddingConstraint);
         }
 
         protected virtual Point GetOffset(Rectangle source, Rectangle target)
@@ -127,15 +136,15 @@ namespace ImageSharp.Processing.AutoCrop
             return new Point(x, y);
         }
 
-        protected virtual Rectangle GetRectangleWithoutOrigin(Rectangle rectangle)
-        {
-            return new Rectangle(0, 0, rectangle.Width, rectangle.Height);
-        }
-
-        protected virtual Rectangle GetPaddedRectangle(Rectangle rectangle)
+        protected virtual Rectangle GetPaddedRectangle(Rectangle rectangle, Rectangle? constraint = null)
         {
             var padding = GetPadSize(rectangle);
-            return rectangle.Expand(padding.Width, padding.Height);
+            var expanded = rectangle.Expand(padding.Width, padding.Height);
+
+            if (constraint.HasValue)
+                expanded = expanded.Constrain(constraint.Value);
+
+            return expanded;
         }
 
         protected virtual Size GetPadSize(Rectangle rectangle)
@@ -146,11 +155,6 @@ namespace ImageSharp.Processing.AutoCrop
             var py = Settings.PadY / 100.0;
 
             return new Size((int)(dimension * px), (int)(dimension * py));
-        }
-
-        protected virtual Rectangle GetSourceRectangle()
-        {
-            return new Rectangle(0, 0, Source.Width, Source.Height);
         }
 
         private Image<TPixel> CreateTarget()

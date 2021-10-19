@@ -185,5 +185,10 @@ namespace ImageSharp.Processing.AutoCrop.Extensions
         {
             return new Point(rectangle.Left, rectangle.Top);
         }
+
+        public static Rectangle Bounds(this Rectangle rectangle)
+        {
+            return new Rectangle(0, 0, rectangle.Width, rectangle.Height);
+        }
     }
 }

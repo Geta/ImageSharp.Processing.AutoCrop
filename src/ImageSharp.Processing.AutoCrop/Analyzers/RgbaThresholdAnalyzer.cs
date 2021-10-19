@@ -6,7 +6,7 @@ using System;
 
 namespace ImageSharp.Processing.AutoCrop.Analyzers
 {
-    public class RgbaThresholdAnalyzer : ThresholdAnalyzer<Rgba32>
+    public class RgbaThresholdAnalyzer : CropAnalyzer<Rgba32>
     {
         private readonly IBorderAnalyzer<Rgba32> _inspector;
 

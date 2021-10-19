@@ -6,7 +6,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace ImageSharp.Processing.AutoCrop.Analyzers
 {
-    public abstract class ThresholdAnalyzer<TPixel> : ICropAnalyzer<TPixel> where TPixel : unmanaged, IPixel<TPixel>
+    public abstract class CropAnalyzer<TPixel> : ICropAnalyzer<TPixel> where TPixel : unmanaged, IPixel<TPixel>
     {
         protected abstract IBorderAnalysis GetBorderAnalysis(Image<TPixel> image, Rectangle rectangle, int? colorThreshold, float? bucketTreshold);
         protected abstract Rectangle GetBoundingBox(Image<TPixel> image, Rectangle rectangle, IBorderAnalysis borderAnalysis, int colorThreshold);

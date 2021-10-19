@@ -1,3 +1,4 @@
+using ImageSharp.Web.AutoCrop.Demo.Infrastructure.Caching;
 using ImageSharp.Web.AutoCrop.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,6 +21,7 @@ namespace ImageSharp.Web.AutoCrop.Demo
         {
             // Configure ImageSharp.Web for service container
             services.AddImageSharp()
+                    .SetCache<NullCache>() // This is for realtime updates of demo
                     .AddAutoCropProcessor();
 
             // Configure rest of services

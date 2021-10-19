@@ -97,21 +97,21 @@ namespace ImageSharp.Web.AutoCrop.Processors
 
             if (Enum.TryParse(resizeModeParameter, true, out ResizeMode resizeMode))
             {
-                settings.Mode = GetMode(resizeMode);
+                settings.PadMode = GetPadMode(resizeMode);
             }
 
             return true;
         }
 
-        private CropMode GetMode(ResizeMode resizeMode)
+        private PadMode GetPadMode(ResizeMode resizeMode)
         {
             switch (resizeMode)
             {
                 case ResizeMode.Max:
                 case ResizeMode.Min:
                 case ResizeMode.Crop:
-                case ResizeMode.Stretch: return CropMode.Contain;
-                default: return CropMode.Pad;
+                case ResizeMode.Stretch: return PadMode.Contain;
+                default: return PadMode.Expand;
             }    
         }
 

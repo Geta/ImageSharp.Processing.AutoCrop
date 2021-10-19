@@ -6,6 +6,6 @@
         public int PadY { get; set; }
         public int? ColorThreshold { get; set; }
         public float? BucketThreshold { get; set; }
-        public CropMode Mode { get; set; } = CropMode.Pad;
+        public PadMode PadMode { get; set; } = PadMode.Expand;
     }
 }

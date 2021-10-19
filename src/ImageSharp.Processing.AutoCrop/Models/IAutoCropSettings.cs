@@ -6,6 +6,6 @@
         int PadY { get; }
         int? ColorThreshold { get; }
         float? BucketThreshold { get; }
-        CropMode Mode { get; }
+        PadMode PadMode { get; }
     }
 }

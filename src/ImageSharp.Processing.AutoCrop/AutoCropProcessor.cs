@@ -122,7 +122,7 @@ namespace ImageSharp.Processing.AutoCrop
         {
             var paddingConstraint = (Rectangle?)null;
 
-            if (Settings.Mode == CropMode.Contain)
+            if (Settings.PadMode == PadMode.Contain)
                 paddingConstraint = Source.Bounds();
 
             return GetPaddedRectangle(Analysis.BoundingBox, paddingConstraint);

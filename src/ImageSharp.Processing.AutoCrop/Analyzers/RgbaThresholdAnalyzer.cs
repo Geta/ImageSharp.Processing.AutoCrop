@@ -39,7 +39,7 @@ namespace ImageSharp.Processing.AutoCrop.Analyzers
                 for (var x = rectangle.X; x < w; x++)
                 {
                     var c = row[x];
-                    var ac = c.A * 0.003921568627451;
+                    var ac = Math.Max(c.A * 0.003921568627451, 1);
 
                     var bd = Math.Abs(c.B - backgroundColor.B) * ac;
                     var gd = Math.Abs(c.G - backgroundColor.G) * ac;

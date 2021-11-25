@@ -109,7 +109,7 @@ namespace ImageSharp.Processing.AutoCrop
             var constrainedSource = paddedSource.Constrain(Source.Bounds());
             var offset = GetOffset(constrainedSource, targetBox);
 
-            image.CopyFrom(Source, constrainedSource, offset);
+            image.CopyRect(Source, constrainedSource, offset);
         }
 
         protected virtual Size GetDestinationSize()
@@ -130,8 +130,8 @@ namespace ImageSharp.Processing.AutoCrop
 
         protected virtual Point GetOffset(Rectangle source, Rectangle target)
         {
-            var x = (target.Width - source.Width) / 2 - source.Left;
-            var y = (target.Height - source.Height) / 2 - source.Top;
+            var x = target.Left - source.Left;
+            var y = target.Top - source.Top;
 
             return new Point(x, y);
         }

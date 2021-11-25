@@ -14,7 +14,9 @@ namespace ImageSharp.Processing.AutoCrop.Tests
             var settings = new AutoCropSettings
             { 
                 PadX = 5,
-                PadY = 5
+                PadY = 5,
+                ColorThreshold = 35,
+                BucketThreshold = 0.945f
             };
 
             using var image = Image.Load("TestImages/test.png");

@@ -11,17 +11,17 @@ namespace ImageSharp.Processing.AutoCrop.Extensions
             return image.PixelType.BitsPerPixel / 8;
         }
 
-        public static void CopyFrom<TPixel>(this Image<TPixel> target, Image<TPixel> source) where TPixel : unmanaged, IPixel<TPixel>
+        public static void CopyRect<TPixel>(this Image<TPixel> target, Image<TPixel> source) where TPixel : unmanaged, IPixel<TPixel>
         {
-            CopyFrom(source, target, new Rectangle(0, 0, source.Width, source.Height), new Point(0, 0));
+            CopyRect(source, target, new Rectangle(0, 0, source.Width, source.Height), new Point(0, 0));
         }
 
-        public static void CopyFrom<TPixel>(this Image<TPixel> target, Image<TPixel> source, Rectangle bounds) where TPixel : unmanaged, IPixel<TPixel>
+        public static void CopyRect<TPixel>(this Image<TPixel> target, Image<TPixel> source, Rectangle bounds) where TPixel : unmanaged, IPixel<TPixel>
         {
-            CopyFrom(source, target, bounds, new Point(0, 0));
+            CopyRect(source, target, bounds, new Point(0, 0));
         }
 
-        public static void CopyFrom<TPixel>(this Image<TPixel> target, Image<TPixel> source, Rectangle bounds, Point offset) where TPixel : unmanaged, IPixel<TPixel>
+        public static void CopyRect<TPixel>(this Image<TPixel> target, Image<TPixel> source, Rectangle bounds, Point offset) where TPixel : unmanaged, IPixel<TPixel>
         {
             for (var y = bounds.Top; y < bounds.Bottom; y++)
             {

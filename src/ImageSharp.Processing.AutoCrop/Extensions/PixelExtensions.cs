@@ -31,7 +31,12 @@ namespace ImageSharp.Processing.AutoCrop.Extensions
         {
             return (byte)Math.Min(byte.MaxValue, bucket * _bucketRatio);
         }
-        
+
+        public static byte ToColorBucket(this byte color)
+        {
+            return (byte)Math.Min(_maxBuckets, Math.Floor(color * _bucketPrecision));
+        }
+
         public static IPixel<Rgb24> ToColor(this byte bucket)
         {
             var v = bucket.ToColorValue();

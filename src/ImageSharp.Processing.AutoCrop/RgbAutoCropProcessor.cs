@@ -7,10 +7,18 @@ namespace ImageSharp.Processing.AutoCrop
 {
     public class RgbAutoCropProcessor : AutoCropProcessor<Rgb24>
     {
+        private readonly ICropAnalyzer<Rgb24> _cropAnalyzer;
+        private readonly IWeightAnalyzer<Rgb24> _weightAnalyzer;
+
         public RgbAutoCropProcessor(Configuration configuration, IAutoCropSettings settings, Image<Rgb24> source) : base(configuration, settings, source)
         {
-            var analyzer = new RgbThresholdAnalyzer();
-            Analysis = analyzer.GetAnalysis(source, settings.ColorThreshold, settings.BucketThreshold);
+            _cropAnalyzer = new RgbThresholdAnalyzer();
+            _weightAnalyzer = new RgbWeightAnalyzer();
+
+            CropAnalysis = _cropAnalyzer.GetAnalysis(source, settings.ColorThreshold, settings.BucketThreshold);
+
+            if (settings.AnalyzeWeights)
+                WeightAnalysis = _weightAnalyzer.GetAnalysis(source, CropAnalysis.Background);
         }
     }
 }

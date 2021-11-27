@@ -20,14 +20,40 @@ namespace ImageSharp.Processing.AutoCrop.Extensions
         {
             var processor = new AutoCropProcessor(settings);
             context.ApplyProcessor(processor);
-            analysis = processor.Analysis;
+            
+            analysis = processor.CropAnalysis;
+        }
+
+        public static void AutoCropKnown(this IImageProcessingContext context, IAutoCropSettings settings, ICropAnalysis cropAnalysis, IWeightAnalysis weightAnalysis = null)
+        {
+            var processor = new PreCalculatedAutoCropProcessor(settings, cropAnalysis, weightAnalysis);
+            context.ApplyProcessor(processor);
+        }
+
+        public static void AutoCrop(this IImageProcessingContext context, IAutoCropSettings settings, out ICropAnalysis cropAnalysis, out IWeightAnalysis weightAnalysis)
+        {
+            var processor = new AutoCropProcessor(settings);
+            context.ApplyProcessor(processor);
+
+            cropAnalysis = processor.CropAnalysis;
+            weightAnalysis = processor.WeightAnalysis;
         }
 
         public static void AnalyzeCrop(this IImageProcessingContext context, IAutoCropSettings settings, out ICropAnalysis analysis)
         {
-            var processor = new CropAnalysisProcessor(settings);
+            var processor = new AnalysisProcessor(settings);
             context.ApplyProcessor(processor);
-            analysis = processor.Analysis;
+
+            analysis = processor.CropAnalysis;
+        }
+
+        public static void AnalyzeCrop(this IImageProcessingContext context, IAutoCropSettings settings, out ICropAnalysis cropAnalysis, out IWeightAnalysis weightAnalysis)
+        {
+            var processor = new AnalysisProcessor(settings);
+            context.ApplyProcessor(processor);
+
+            cropAnalysis = processor.CropAnalysis;
+            weightAnalysis = processor.WeightAnalysis;
         }
 
         public static bool TryAutoCrop(this IImageProcessingContext context, IAutoCropSettings settings)
@@ -67,6 +93,21 @@ namespace ImageSharp.Processing.AutoCrop.Extensions
             catch (Exception)
             {
                 analysis = null;
+                return false;
+            }
+        }
+
+        public static bool TryAnalyzeCrop(this IImageProcessingContext context, IAutoCropSettings settings, out ICropAnalysis cropAnalysis, out IWeightAnalysis weightAnalysis)
+        {
+            try
+            {
+                AnalyzeCrop(context, settings, out cropAnalysis, out weightAnalysis);
+                return true;
+            }
+            catch (Exception)
+            {
+                cropAnalysis = null;
+                weightAnalysis = null;
                 return false;
             }
         }

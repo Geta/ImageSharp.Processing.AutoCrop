@@ -6,21 +6,6 @@ namespace ImageSharp.Processing.AutoCrop.Extensions
 {
     public static class ImageExtensions
     {
-        public static int BytesPerPixel(this Image image)
-        {
-            return image.PixelType.BitsPerPixel / 8;
-        }
-
-        public static void CopyRect<TPixel>(this Image<TPixel> target, Image<TPixel> source) where TPixel : unmanaged, IPixel<TPixel>
-        {
-            CopyRect(source, target, new Rectangle(0, 0, source.Width, source.Height), new Point(0, 0));
-        }
-
-        public static void CopyRect<TPixel>(this Image<TPixel> target, Image<TPixel> source, Rectangle bounds) where TPixel : unmanaged, IPixel<TPixel>
-        {
-            CopyRect(source, target, bounds, new Point(0, 0));
-        }
-
         public static void CopyRect<TPixel>(this Image<TPixel> target, Image<TPixel> source, Rectangle bounds, Point offset) where TPixel : unmanaged, IPixel<TPixel>
         {
             for (var y = bounds.Top; y < bounds.Bottom; y++)

@@ -7,5 +7,6 @@
         int? ColorThreshold { get; }
         float? BucketThreshold { get; }
         PadMode PadMode { get; }
+        bool AnalyzeWeights { get; }
     }
 }

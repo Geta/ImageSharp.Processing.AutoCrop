@@ -11,7 +11,8 @@ namespace ImageSharp.Processing.AutoCrop
     {
         private readonly IAutoCropSettings _settings;
 
-        public ICropAnalysis Analysis { get; set; }
+        public ICropAnalysis CropAnalysis { get; internal set; }
+        public IWeightAnalysis WeightAnalysis { get; internal set; }
 
         public AutoCropProcessor(IAutoCropSettings settings)
         {
@@ -23,14 +24,18 @@ namespace ImageSharp.Processing.AutoCrop
             if (source is Image<Rgb24> rgbSource)
             {
                 var processor = new RgbAutoCropProcessor(configuration, _settings, rgbSource);
-                Analysis = processor.Analysis;
+
+                CropAnalysis = processor.CropAnalysis;
+                WeightAnalysis = processor.WeightAnalysis;
 
                 return (ICloningImageProcessor<TPixel>)processor;
             }
             else if (source is Image<Rgba32> rgbaSource)
             {
                 var processor = new RgbaAutoCropProcessor(configuration, _settings, rgbaSource);
-                Analysis = processor.Analysis;
+
+                CropAnalysis = processor.CropAnalysis;
+                WeightAnalysis = processor.WeightAnalysis;
 
                 return (ICloningImageProcessor<TPixel>)processor;
             }
@@ -45,7 +50,8 @@ namespace ImageSharp.Processing.AutoCrop
         protected readonly IAutoCropSettings Settings;
         protected readonly Image<TPixel> Source;
         
-        public ICropAnalysis Analysis { get; set; }
+        public ICropAnalysis CropAnalysis { get; set; }
+        public IWeightAnalysis WeightAnalysis { get; set; }
 
         protected AutoCropProcessor(Configuration configuration, IAutoCropSettings settings, Image<TPixel> source)
         {
@@ -56,7 +62,7 @@ namespace ImageSharp.Processing.AutoCrop
 
         public Image<TPixel> CloneAndExecute()
         {
-            if (!Analysis.Success)
+            if (!CropAnalysis.Success)
                 return null;
 
             try
@@ -68,7 +74,7 @@ namespace ImageSharp.Processing.AutoCrop
             }
             catch (Exception innerException)
             {
-                throw new ImageProcessingException("An error occurred when processing the image using " + GetType().Name + ". See the inner exception for more detail.", innerException);
+                throw new ImageProcessingException($"An error occurred when processing the image using {GetType().Name}. See the inner exception for more detail.", innerException);
             }
         }
 
@@ -106,8 +112,9 @@ namespace ImageSharp.Processing.AutoCrop
 
             // Copy as much of the source image as possible.
             // Mainly to avoid jagged edges
+            
+            var offset = GetOffset(paddedSource, targetBox);
             var constrainedSource = paddedSource.Constrain(Source.Bounds());
-            var offset = GetOffset(constrainedSource, targetBox);
 
             image.CopyRect(Source, constrainedSource, offset);
         }
@@ -125,7 +132,7 @@ namespace ImageSharp.Processing.AutoCrop
             if (Settings.PadMode == PadMode.Contain)
                 paddingConstraint = Source.Bounds();
 
-            return GetPaddedRectangle(Analysis.BoundingBox, paddingConstraint);
+            return GetPaddedRectangle(CropAnalysis.BoundingBox, paddingConstraint);
         }
 
         protected virtual Point GetOffset(Rectangle source, Rectangle target)
@@ -139,7 +146,9 @@ namespace ImageSharp.Processing.AutoCrop
         protected virtual Rectangle GetPaddedRectangle(Rectangle rectangle, Rectangle? constraint = null)
         {
             var padding = GetPadSize(rectangle);
-            var expanded = rectangle.Expand(padding.Width, padding.Height);
+            var weight = WeightAnalysis?.Weight ?? new PointF(0, 0);
+
+            var expanded = rectangle.Expand(padding.Width, padding.Height, weight);
 
             if (constraint.HasValue)
                 expanded = expanded.Constrain(constraint.Value);
@@ -160,7 +169,7 @@ namespace ImageSharp.Processing.AutoCrop
         private Image<TPixel> CreateTarget()
         {
             var destinationSize = GetDestinationSize();
-            var background = Analysis.Background.ToPixel<TPixel>();
+            var background = CropAnalysis.Background.ToPixel<TPixel>();
 
             return new Image<TPixel>(Configuration, destinationSize.Width, destinationSize.Height, background);
         }

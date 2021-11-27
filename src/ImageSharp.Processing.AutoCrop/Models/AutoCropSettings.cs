@@ -7,5 +7,6 @@
         public int? ColorThreshold { get; set; }
         public float? BucketThreshold { get; set; }
         public PadMode PadMode { get; set; } = PadMode.Expand;
-    }
+        public bool AnalyzeWeights { get; set; }
+}
 }

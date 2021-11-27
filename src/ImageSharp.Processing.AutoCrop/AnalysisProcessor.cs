@@ -6,13 +6,14 @@ using System;
 
 namespace ImageSharp.Processing.AutoCrop
 {
-    public class CropAnalysisProcessor : IImageProcessor
+    public class AnalysisProcessor : IImageProcessor
     {
         private readonly IAutoCropSettings _settings;
 
-        public ICropAnalysis Analysis { get; set; }
+        public ICropAnalysis CropAnalysis { get; set; }
+        public IWeightAnalysis WeightAnalysis { get; set; }
 
-        public CropAnalysisProcessor(IAutoCropSettings settings)
+        public AnalysisProcessor(IAutoCropSettings settings)
         {
             _settings = settings;
         }
@@ -21,15 +22,20 @@ namespace ImageSharp.Processing.AutoCrop
         {
             if (source is Image<Rgb24> rgbSource)
             {
-                var processor = new RgbCropAnalysisProcessor(configuration, _settings, rgbSource);
-                Analysis = processor.GetAnalysis();
+                var processor = new RgbAnalysisProcessor(configuration, _settings, rgbSource);
+
+                CropAnalysis = processor.GetCropAnalysis();
+
+                if (_settings.AnalyzeWeights)
+                    WeightAnalysis = processor.GetWeightAnalysis(CropAnalysis);
 
                 return (IImageProcessor<TPixel>)processor;
             }
             else if (source is Image<Rgba32> rgbaSource)
             {
-                var processor = new RgbaCropAnalysisProcessor(configuration, _settings, rgbaSource);
-                Analysis = processor.GetAnalysis();
+                var processor = new RgbaAnalysisProcessor(configuration, _settings, rgbaSource);
+
+                CropAnalysis = processor.GetCropAnalysis();
 
                 return (IImageProcessor<TPixel>)processor;
             }
@@ -38,7 +44,7 @@ namespace ImageSharp.Processing.AutoCrop
         }
     }
 
-    public abstract class CropAnalysisProcessor<TPixel> : IImageProcessor<TPixel> where TPixel : unmanaged, IPixel<TPixel>
+    public abstract class AnalysisProcessor<TPixel> : IImageProcessor<TPixel> where TPixel : unmanaged, IPixel<TPixel>
     {
         protected readonly Configuration Configuration;
         protected readonly IAutoCropSettings Settings;
@@ -46,7 +52,7 @@ namespace ImageSharp.Processing.AutoCrop
 
         public ICropAnalysis Analysis { get; }
 
-        protected CropAnalysisProcessor(Configuration configuration, IAutoCropSettings settings, Image<TPixel> source)
+        protected AnalysisProcessor(Configuration configuration, IAutoCropSettings settings, Image<TPixel> source)
         {
             Configuration = configuration;
             Source = source;
@@ -64,7 +70,8 @@ namespace ImageSharp.Processing.AutoCrop
             GC.SuppressFinalize(this);
         }
 
-        public abstract ICropAnalysis GetAnalysis();
+        public abstract ICropAnalysis GetCropAnalysis();
+        public abstract IWeightAnalysis GetWeightAnalysis(ICropAnalysis cropAnalysis);
        
         protected virtual void Dispose(bool disposing)
         {

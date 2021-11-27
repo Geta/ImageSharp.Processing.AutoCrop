@@ -45,13 +45,13 @@ namespace ImageSharp.Web.AutoCrop.Processors
                 catch (Exception ex)
                 {
                     logger.LogError(ex, ex.Message);
-                }                
+                }
             }
 
             return image;
         }
 
-        private bool ParseSettings(string autoCropParameter, string resizeModeParameter, out AutoCropSettings settings)
+        private static bool ParseSettings(string autoCropParameter, string resizeModeParameter, out AutoCropSettings settings)
         {
             settings = null;
 
@@ -103,7 +103,7 @@ namespace ImageSharp.Web.AutoCrop.Processors
             return true;
         }
 
-        private PadMode GetPadMode(ResizeMode resizeMode)
+        private static PadMode GetPadMode(ResizeMode resizeMode)
         {
             switch (resizeMode)
             {
@@ -111,11 +111,14 @@ namespace ImageSharp.Web.AutoCrop.Processors
                 case ResizeMode.Min:
                 case ResizeMode.Crop:
                 case ResizeMode.Stretch: return PadMode.Contain;
+                case ResizeMode.Pad:
+                case ResizeMode.BoxPad:
+                case ResizeMode.Manual:
                 default: return PadMode.Expand;
-            }    
+            }
         }
 
-        private int Clamp(int value, int min, int max)
+        private static int Clamp(int value, int min, int max)
         {
             if (value > max)
                 return max;

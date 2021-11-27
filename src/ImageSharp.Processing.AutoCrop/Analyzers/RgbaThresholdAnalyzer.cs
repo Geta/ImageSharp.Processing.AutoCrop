@@ -61,7 +61,7 @@ namespace ImageSharp.Processing.AutoCrop.Analyzers
                 }
             }
 
-            return new Rectangle(xn, yn, xm - xn, ym - yn);
+            return new Rectangle(xn, yn, xm - xn + 1, ym - yn + 1);
         }
     }
 }

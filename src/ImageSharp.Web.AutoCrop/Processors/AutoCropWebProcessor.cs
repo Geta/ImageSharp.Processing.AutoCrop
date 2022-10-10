@@ -11,7 +11,7 @@ using System.Globalization;
 
 namespace ImageSharp.Web.AutoCrop.Processors
 {
-    public class AutoCropWebProcessor : IImageWebProcessor
+    public sealed class AutoCropWebProcessor : IImageWebProcessor
     {
         private const string _autoCropCommandKey = "autocrop";
         private const string _backgroundColorCommandKey = "bgcolor";
@@ -24,12 +24,16 @@ namespace ImageSharp.Web.AutoCrop.Processors
 
         public IEnumerable<string> Commands => _autoCropCommands;
 
-        public FormattedImage Process(FormattedImage image, ILogger logger, IDictionary<string, string> commands, CommandParser parser, CultureInfo culture)
+        public bool RequiresTrueColorPixelFormat(CommandCollection commands, CommandParser parser, CultureInfo culture)
+        {
+            return true;
+        }
+
+        public FormattedImage Process(FormattedImage image, ILogger logger, CommandCollection commands, CommandParser parser, CultureInfo culture)
         {
             var autoCropParameter = commands.GetValueOrDefault(_autoCropCommandKey);
             var resizeModeParameter = commands.GetValueOrDefault(_resizeModeCommandKey);
             var parsed = ParseSettings(autoCropParameter, resizeModeParameter, out var settings);
-
             if (parsed) 
             {
                 try
@@ -37,14 +41,14 @@ namespace ImageSharp.Web.AutoCrop.Processors
                     ICropAnalysis analysis = null;
                     image.Image.Mutate((ctx) => ctx.AutoCrop(settings, out analysis));
 
-                    if (analysis.Success && !commands.ContainsKey(_backgroundColorCommandKey))
+                    if (analysis.Success && commands.IndexOf(_backgroundColorCommandKey) >= 0)
                     {
                         commands.Add(_backgroundColorCommandKey, analysis.Background.ToHex());
                     }
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, ex.Message);
+                    logger.LogError(ex, "{message}", ex.Message);
                 }
             }
 
@@ -127,6 +131,6 @@ namespace ImageSharp.Web.AutoCrop.Processors
                 return min;
 
             return value;
-        }
+        }        
     }
 }

@@ -2,7 +2,7 @@
 
 namespace ImageSharp.Processing.AutoCrop.Models
 {
-    public class RenderInstructions
+    public sealed class RenderInstructions
     {
         public Size Size { get; set; }
         public Rectangle Source { get; set; }

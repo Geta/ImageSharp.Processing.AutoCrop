@@ -4,20 +4,23 @@ using System.Reflection;
 
 namespace ImageSharp.Processing.AutoCrop.Extensions
 {
-    public static class ImageExtensions
+    internal static class ImageExtensions
     {
         public static void CopyRect<TPixel>(this Image<TPixel> target, Image<TPixel> source, Rectangle bounds, Point offset) where TPixel : unmanaged, IPixel<TPixel>
         {
-            for (var y = bounds.Top; y < bounds.Bottom; y++)
+            source.ProcessPixelRows(target, (sourceAccessor, targetAccessor) =>
             {
-                var srow = source.GetPixelRowSpan(y);
-                var tRow = target.GetPixelRowSpan(y + offset.Y);
-
-                for (var x = bounds.Left; x < bounds.Right; x++)
+                for (var y = bounds.Top; y < bounds.Bottom; y++)
                 {
-                    tRow[x + offset.X] = srow[x];
+                    var srow = sourceAccessor.GetRowSpan(y);
+                    var tRow = targetAccessor.GetRowSpan(y + offset.Y);
+
+                    for (var x = bounds.Left; x < bounds.Right; x++)
+                    {
+                        tRow[x + offset.X] = srow[x];
+                    }
                 }
-            }
+            });
         }
 
         public static void SwapPixelBuffersFrom<TPixel>(this Image<TPixel> image, Image<TPixel> pixelSource) where TPixel : unmanaged, IPixel<TPixel>

@@ -15,8 +15,8 @@ Works with SixLabors.ImageSharp 1.0.1 and above.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SixLabors.ImageSharp" Version="[1.0.1, 2.0.0)" />
-    <PackageReference Include="SixLabors.ImageSharp.Web" Version="[1.0.0, 2.0.0)" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="[2.1.1, 3.0.0)" />
+    <PackageReference Include="SixLabors.ImageSharp.Web" Version="[2.0.0, 3.0.0)" />
   </ItemGroup>
 
   <ItemGroup>

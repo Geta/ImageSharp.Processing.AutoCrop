@@ -5,7 +5,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace ImageSharp.Processing.AutoCrop
 {
-    public class RgbAnalysisProcessor : AnalysisProcessor<Rgb24>
+    public sealed class RgbAnalysisProcessor : AnalysisProcessor<Rgb24>
     {
         private readonly IWeightAnalyzer<Rgb24> _weightAnalyzer;
         private readonly ICropAnalyzer<Rgb24> _cropAnalyzer;

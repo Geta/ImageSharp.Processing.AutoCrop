@@ -2,7 +2,7 @@
 
 namespace ImageSharp.Processing.AutoCrop.Models
 {
-    public class CropAnalysis : ICropAnalysis
+    public sealed class CropAnalysis : ICropAnalysis
     {
         public Rectangle BoundingBox { get; set; }
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31229.75
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageSharp.Processing.AutoCrop", "src\ImageSharp.Processing.AutoCrop\ImageSharp.Processing.AutoCrop.csproj", "{A77A54D1-25FE-4AB2-A582-CCADF7F40163}"
 EndProject
@@ -9,9 +9,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B2D77117
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageSharp.Processing.AutoCrop.Tests", "tests\ImageSharp.Processing.AutoCrop.Tests\ImageSharp.Processing.AutoCrop.Tests.csproj", "{967FB33F-3D42-4831-97A5-D3E560578025}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageSharp.Web.AutoCrop", "src\ImageSharp.Web.AutoCrop\ImageSharp.Web.AutoCrop.csproj", "{5E58929B-E685-488A-888E-E8031873E4B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageSharp.Web.AutoCrop", "src\ImageSharp.Web.AutoCrop\ImageSharp.Web.AutoCrop.csproj", "{5E58929B-E685-488A-888E-E8031873E4B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageSharp.Web.AutoCrop.Demo", "src\ImageSharp.Web.AutoCrop.Demo\ImageSharp.Web.AutoCrop.Demo.csproj", "{83CFC211-E70E-44C3-B7DD-2E41AED2729F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageSharp.Web.AutoCrop.Demo", "src\ImageSharp.Web.AutoCrop.Demo\ImageSharp.Web.AutoCrop.Demo.csproj", "{83CFC211-E70E-44C3-B7DD-2E41AED2729F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2AF19D02-925B-4250-9C4A-67CB837426EB}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

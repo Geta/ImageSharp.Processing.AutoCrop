@@ -5,7 +5,7 @@ using SixLabors.ImageSharp;
 
 namespace ImageSharp.Processing.AutoCrop
 {
-    public class PreCalculatedAutoCropProcessor : AutoCropProcessor
+    public sealed class PreCalculatedAutoCropProcessor : AutoCropProcessor
     {
         private readonly IAutoCropSettings _settings;
 
@@ -22,7 +22,7 @@ namespace ImageSharp.Processing.AutoCrop
         }
     }
 
-    public class PreCalculatedAutoCropProcessor<TPixel> : AutoCropProcessor<TPixel> where TPixel : unmanaged, IPixel<TPixel>
+    public sealed class PreCalculatedAutoCropProcessor<TPixel> : AutoCropProcessor<TPixel> where TPixel : unmanaged, IPixel<TPixel>
     {
         public PreCalculatedAutoCropProcessor(Configuration configuration, IAutoCropSettings settings, Image<TPixel> source, ICropAnalysis cropAnalysis, IWeightAnalysis weightAnalysis) : base(configuration, settings, source)
         {

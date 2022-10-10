@@ -3,7 +3,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace ImageSharp.Processing.AutoCrop.Extensions
 {
-    public static class ColorExtensions
+    internal static class ColorExtensions
     {
         public static byte ToColorBucket(this Color color)
         {

@@ -6,7 +6,7 @@ using System;
 
 namespace ImageSharp.Processing.AutoCrop
 {
-    public class AnalysisProcessor : IImageProcessor
+    internal sealed class AnalysisProcessor : IImageProcessor
     {
         private readonly IAutoCropSettings _settings;
 
@@ -29,7 +29,7 @@ namespace ImageSharp.Processing.AutoCrop
                 if (_settings.AnalyzeWeights)
                     WeightAnalysis = processor.GetWeightAnalysis(CropAnalysis);
 
-                return (IImageProcessor<TPixel>)processor;
+                return processor as IImageProcessor<TPixel>;
             }
             else if (source is Image<Rgba32> rgbaSource)
             {
@@ -37,7 +37,7 @@ namespace ImageSharp.Processing.AutoCrop
 
                 CropAnalysis = processor.GetCropAnalysis();
 
-                return (IImageProcessor<TPixel>)processor;
+                return processor as IImageProcessor<TPixel>;
             }
 
             throw new NotSupportedException("Unsupported pixel type");

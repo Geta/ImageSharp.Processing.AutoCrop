@@ -6,7 +6,7 @@ using System;
 
 namespace ImageSharp.Processing.AutoCrop.Analyzers
 {
-    public class RgbThresholdAnalyzer : CropAnalyzer<Rgb24>
+    public sealed class RgbThresholdAnalyzer : CropAnalyzer<Rgb24>
     {
         private readonly IBorderAnalyzer<Rgb24> _inspector;
 
@@ -39,33 +39,36 @@ namespace ImageSharp.Processing.AutoCrop.Analyzers
             // Calculated y-max
             var ym = rectangle.Y;
 
-            for (var y = rectangle.Y; y < h; y++)
+            image.ProcessPixelRows((accessor) =>
             {
-                var row = image.GetPixelRowSpan(y);
-
-                for (var x = rectangle.X; x < w; x++)
+                for (var y = rectangle.Y; y < h; y++)
                 {
-                    // Current pixel
-                    var c = row[x];
+                    var row = accessor.GetRowSpan(y);
 
-                    // Delta color values
-                    var bd = Math.Abs(c.B - backgroundColor.B);
-                    var gd = Math.Abs(c.G - backgroundColor.G);
-                    var rd = Math.Abs(c.R - backgroundColor.R);
+                    for (var x = rectangle.X; x < w; x++)
+                    {
+                        // Current pixel
+                        var c = row[x];
 
-                    // Grayscale operation on color delta
-                    // This is done to properly evaluate if 
-                    // the perceptual differences are above threshold
+                        // Delta color values
+                        var bd = Math.Abs(c.B - backgroundColor.B);
+                        var gd = Math.Abs(c.G - backgroundColor.G);
+                        var rd = Math.Abs(c.R - backgroundColor.R);
 
-                    if (0.299 * rd + 0.587 * gd + 0.114 * bd <= colorThreshold)
-                        continue;
+                        // Grayscale operation on color delta
+                        // This is done to properly evaluate if 
+                        // the perceptual differences are above threshold
 
-                    if (x < xn) xn = x;
-                    if (x > xm) xm = x;
-                    if (y < yn) yn = y;
-                    if (y > ym) ym = y;
+                        if (0.299 * rd + 0.587 * gd + 0.114 * bd <= colorThreshold)
+                            continue;
+
+                        if (x < xn) xn = x;
+                        if (x > xm) xm = x;
+                        if (y < yn) yn = y;
+                        if (y > ym) ym = y;
+                    }
                 }
-            }
+            });
 
             return new Rectangle(xn, yn, xm - xn + 1, ym - yn + 1);
         }

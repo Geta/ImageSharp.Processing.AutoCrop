@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ImageSharp.Processing.AutoCrop.Detection
 {
-    public class RgbaBorderAnalyzer : BorderAnalyzer<Rgba32>
+    public sealed class RgbaBorderAnalyzer : BorderAnalyzer<Rgba32>
     {
         public override IBorderAnalysis Analyze(Image<Rgba32> image, Rectangle rectangle, int? colorThreshold, float? bucketThreshold)
         {
@@ -78,67 +78,70 @@ namespace ImageSharp.Processing.AutoCrop.Detection
                 }
             }
 
-            // A loop of pixels along the top edge from left to right
-            var row = image.GetPixelRowSpan(0);
-
-            for (var x = 0; x < w; x++)
+            image.ProcessPixelRows((accessor) =>
             {
-                var c = row[x];
-                var ce = colors.ContainsKey(c);
+                // A loop of pixels along the top edge from left to right
+                var row = accessor.GetRowSpan(0);
 
-                if (ce)
+                for (var x = 0; x < w; x++)
                 {
-                    colors[c]++;
-                }
-                else if (colors.Count < colorThreshold)
-                {
-                    colors.Add(c, 1);
-                }
+                    var c = row[x];
+                    var ce = colors.ContainsKey(c);
 
-                if (ce || colors.Count >= colorThreshold)
-                {
-                    var cb = c.ToColorBucket();
-                    if (buckets.ContainsKey(cb))
+                    if (ce)
                     {
-                        buckets[cb]++;
+                        colors[c]++;
                     }
-                    else
+                    else if (colors.Count < colorThreshold)
                     {
-                        buckets.Add(cb, 1);
+                        colors.Add(c, 1);
                     }
-                }
-            }
 
-            // A loop of pixels along the bottom edge from left to right
-            row = image.GetPixelRowSpan(rectangle.Bottom - 1);
-
-            for (var x = 0; x < w; x++)
-            {
-                var c = row[x];
-                var ce = colors.ContainsKey(c);
-
-                if (ce)
-                {
-                    colors[c]++;
-                }
-                else if (colors.Count < colorThreshold)
-                {
-                    colors.Add(c, 1);
-                }
-
-                if (ce || colors.Count >= colorThreshold)
-                {
-                    var cb = c.ToColorBucket();
-                    if (buckets.ContainsKey(cb))
+                    if (ce || colors.Count >= colorThreshold)
                     {
-                        buckets[cb]++;
-                    }
-                    else
-                    {
-                        buckets.Add(cb, 1);
+                        var cb = c.ToColorBucket();
+                        if (buckets.ContainsKey(cb))
+                        {
+                            buckets[cb]++;
+                        }
+                        else
+                        {
+                            buckets.Add(cb, 1);
+                        }
                     }
                 }
-            }
+
+                // A loop of pixels along the bottom edge from left to right
+                row = accessor.GetRowSpan(rectangle.Bottom - 1);
+
+                for (var x = 0; x < w; x++)
+                {
+                    var c = row[x];
+                    var ce = colors.ContainsKey(c);
+
+                    if (ce)
+                    {
+                        colors[c]++;
+                    }
+                    else if (colors.Count < colorThreshold)
+                    {
+                        colors.Add(c, 1);
+                    }
+
+                    if (ce || colors.Count >= colorThreshold)
+                    {
+                        var cb = c.ToColorBucket();
+                        if (buckets.ContainsKey(cb))
+                        {
+                            buckets[cb]++;
+                        }
+                        else
+                        {
+                            buckets.Add(cb, 1);
+                        }
+                    }
+                }
+            });           
 
             return new BorderAnalysis<Rgba32>(colors, buckets, colorThreshold, bucketThreshold);
         }

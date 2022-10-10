@@ -28,7 +28,7 @@ namespace ImageSharp.Processing.AutoCrop
                 CropAnalysis = processor.CropAnalysis;
                 WeightAnalysis = processor.WeightAnalysis;
 
-                return (ICloningImageProcessor<TPixel>)processor;
+                return processor as ICloningImageProcessor<TPixel>;
             }
             else if (source is Image<Rgba32> rgbaSource)
             {
@@ -37,7 +37,7 @@ namespace ImageSharp.Processing.AutoCrop
                 CropAnalysis = processor.CropAnalysis;
                 WeightAnalysis = processor.WeightAnalysis;
 
-                return (ICloningImageProcessor<TPixel>)processor;
+                return processor as ICloningImageProcessor<TPixel>;
             }
 
             throw new NotSupportedException("Unsupported pixel type");

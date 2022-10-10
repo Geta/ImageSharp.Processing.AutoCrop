@@ -1,6 +1,6 @@
 ﻿namespace ImageSharp.Processing.AutoCrop.Models
 {
-    public class AutoCropSettings : IAutoCropSettings
+    public sealed class AutoCropSettings : IAutoCropSettings
     {
         public int PadX { get; set; }
         public int PadY { get; set; }

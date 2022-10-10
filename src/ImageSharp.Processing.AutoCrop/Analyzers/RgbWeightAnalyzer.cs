@@ -4,7 +4,7 @@ using System;
 
 namespace ImageSharp.Processing.AutoCrop.Analyzers
 {
-    public class RgbWeightAnalyzer : WeightAnalyzer<Rgb24>
+    public sealed class RgbWeightAnalyzer : WeightAnalyzer<Rgb24>
     {
         protected override PointF GetWeight(Image<Rgb24> weightMap, Rgb24 backgroundColor)
         {
@@ -16,32 +16,35 @@ namespace ImageSharp.Processing.AutoCrop.Analyzers
 
             var weight = new PointF(0, 0);
 
-            for (var y = 0; y < h; y++)
+            weightMap.ProcessPixelRows((accessor) =>
             {
-                // Normalized vector position
-                var yn = (y - offset) / offset;
-
-                var row = weightMap.GetPixelRowSpan(y);
-
-                for (var x = 0; x < w; x++)
+                for (var y = 0; y < h; y++)
                 {
                     // Normalized vector position
-                    var xn = (x - offset) / offset;
+                    var yn = (y - offset) / offset;
 
-                    // Current pixel
-                    var c = row[x];
+                    var row = accessor.GetRowSpan(y);
 
-                    // Delta color values
-                    var bd = Math.Abs(c.B - backgroundColor.B) * Constants.BytePrecision;
-                    var gd = Math.Abs(c.G - backgroundColor.G) * Constants.BytePrecision;
-                    var rd = Math.Abs(c.R - backgroundColor.R) * Constants.BytePrecision;
+                    for (var x = 0; x < w; x++)
+                    {
+                        // Normalized vector position
+                        var xn = (x - offset) / offset;
 
-                    var d = 0.299 * rd + 0.587 * gd + 0.114 * bd;
-                    var v = new PointF((float)(xn * d * average), (float)(yn * d * average));
+                        // Current pixel
+                        var c = row[x];
 
-                    weight = new PointF(weight.X + v.X, weight.Y + v.Y);
+                        // Delta color values
+                        var bd = Math.Abs(c.B - backgroundColor.B) * Constants.BytePrecision;
+                        var gd = Math.Abs(c.G - backgroundColor.G) * Constants.BytePrecision;
+                        var rd = Math.Abs(c.R - backgroundColor.R) * Constants.BytePrecision;
+
+                        var d = 0.299 * rd + 0.587 * gd + 0.114 * bd;
+                        var v = new PointF((float)(xn * d * average), (float)(yn * d * average));
+
+                        weight = new PointF(weight.X + v.X, weight.Y + v.Y);
+                    }
                 }
-            }
+            });            
 
             return weight;
         }

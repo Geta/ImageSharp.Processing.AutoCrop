@@ -3,7 +3,7 @@ using SixLabors.ImageSharp;
 
 namespace ImageSharp.Processing.AutoCrop.Detection
 {
-    public class NullBorderAnalysis : IBorderAnalysis
+    public sealed class NullBorderAnalysis : IBorderAnalysis
     {
         public bool Success => false;
         public float BucketRatio => 0;

@@ -2,7 +2,7 @@
 
 namespace ImageSharp.Processing.AutoCrop.Extensions
 {
-    public static class SizeExtensions
+    internal static class SizeExtensions
     {
         public static Point ToPoint(this Size size)
         {

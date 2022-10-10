@@ -3,7 +3,7 @@ using System;
 
 namespace ImageSharp.Processing.AutoCrop.Extensions
 {
-    public static class RectangleExtensions
+    internal static class RectangleExtensions
     {
         public static Rectangle Aspect(this Rectangle rectangle, float aspect, int width, int height)
         {

@@ -2,7 +2,7 @@
 
 namespace ImageSharp.Processing.AutoCrop.Models
 {
-    public class AutoCropState
+    public sealed class AutoCropState
     {
         public readonly Rectangle Bounds;
         public readonly Color BorderColor;

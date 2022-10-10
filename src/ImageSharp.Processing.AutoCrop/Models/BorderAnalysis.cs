@@ -7,20 +7,15 @@ using System.Linq;
 
 namespace ImageSharp.Processing.AutoCrop.Models
 {
-    public class BorderAnalysis : IBorderAnalysis
+    public sealed class BorderAnalysis : IBorderAnalysis
     {
-        public BorderAnalysis()
-        {
-
-        }
-
         public int Colors { get; }
         public Color Background { get; }
         public float BucketRatio { get; }
         public bool Success { get; }
     }
 
-    public class BorderAnalysis<TPixel> : IBorderAnalysis where TPixel : unmanaged, IPixel
+    public sealed class BorderAnalysis<TPixel> : IBorderAnalysis where TPixel : unmanaged, IPixel
     {
         public BorderAnalysis(IDictionary<Color, int> colors, IDictionary<int, int> buckets, int? colorThreshold, float? bucketThreshold)
         {

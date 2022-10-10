@@ -3,7 +3,7 @@ using System;
 
 namespace ImageSharp.Processing.AutoCrop.Extensions
 {
-    public static class PixelExtensions
+    internal static class PixelExtensions
     {
         private static readonly byte _maxBuckets = 10;
         private static readonly double _bucketPrecision = (_maxBuckets + 1) / (double)byte.MaxValue;

@@ -1,7 +1,6 @@
 using ImageSharp.Web.AutoCrop.Demo.Infrastructure.Caching;
 using ImageSharp.Web.AutoCrop.Extensions;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SixLabors.ImageSharp.Web.DependencyInjection;
@@ -28,7 +27,7 @@ namespace ImageSharp.Web.AutoCrop.Demo
             services.AddRazorPages();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             // Configure ImageSharp.Web
             app.UseImageSharp();

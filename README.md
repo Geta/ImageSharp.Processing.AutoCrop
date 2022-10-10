@@ -3,7 +3,7 @@
 ## Description
 
 Automatic cropping for images with a flat background.
-Works with SixLabors.ImageSharp 1.0.0 and above.
+Works with SixLabors.ImageSharp 2.0.0 and above.
 
 Uses a relative luminance tolerance to determine which area to crop.
 
@@ -17,7 +17,7 @@ Uses a relative luminance tolerance to determine which area to crop.
 
 ### ImageSharp.Web integration
 
-Requires SixLabors.ImageSharp 1.0.1 or above
+Requires SixLabors.ImageSharp 2.0.0 or above
 
 - `install-package ImageSharp.Web.AutoCrop`
 
@@ -48,7 +48,7 @@ Check out the [demo project](src/ImageSharp.Web.AutoCrop.Demo) for the full sour
 
 ### Plain AutoCrop
 
-Requires SixLabors.ImageSharp 1.0.0 or above
+Requires SixLabors.ImageSharp 2.0.0 or above
 
 - `install-package ImageSharp.Processing.AutoCrop`
 
